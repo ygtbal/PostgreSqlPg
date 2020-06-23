@@ -1,0 +1,6 @@
+const path  = require('path')
+module.exports = {
+    "config": path.resolve('./bin', 'config.js'),
+    "models-path": path.resolve('./private_models'),
+    "migrations-path": path.resolve('./migrations')
+};
