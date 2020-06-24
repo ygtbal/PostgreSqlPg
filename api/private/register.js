@@ -10,8 +10,8 @@ const pg = require('pg');
 const config = configJson['development'];
 import CloudModels from '../../cloud_models/index';
 
-app.post('/', (req, res) => {
-  db.Business.create(req.body).then(() => {
+app.post('/', async (req, res) => {
+  db.Business.create(req.body).then(async () => {
     const pool = new pg.Pool({
       user: config.username,
       host: config.host,
@@ -19,9 +19,7 @@ app.post('/', (req, res) => {
       password: config.password,
       port: '5432',
     });
-    pool.query(`CREATE DATABASE ${req.body.name}`).then((resul) => {
-      // CloudModels(db);
-      console.log();
+    pool.query(`CREATE DATABASE ${req.body.name}`).then(async (resul) => {
       const client = {
         username: config.username,
         host: config.host,
@@ -29,21 +27,10 @@ app.post('/', (req, res) => {
         password: config.password,
         dialect: config.dialect,
       };
-      const clouddb = CloudModels(client);
-      clouddb.Users.create({name: req.body.name}).then(() => {
-        return res.json({
-          type: 'true',
-        })
-      }).catch((err) => {
-        return res.json({
-          type: false,
-          message: err.toString(),
-        })
-      })
-      // return res.json({
-      //   type: true,
-      //   message: 'DB_Oluşturuldu',
-      // })
+      return res.json({
+        type: true,
+        message: 'DB Oluşturuldu',
+      });
     }).catch((err) => {
       return res.json({
         type: false,
