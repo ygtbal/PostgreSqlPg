@@ -4,15 +4,11 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const port = process.env.PORT || 8000;
-// when a random route is inputed
-// app.get('*', (req, res) => res.status(200).send({
-//    message: 'Welcome to this API.'
-// }));
-// app.listen(port, () => {
-//    console.log(`Server is running on PORT ${port}`);
-// });
+
 const privateRoute = require('./private/index');
+const cloudRoute = require('./cloud/index');
 app.use('/private', privateRoute);
+app.use('/cloud', cloudRoute);
 app.listen(port, () => {
   console.log(`Server is runnign on PORT ${port}`)
 })
