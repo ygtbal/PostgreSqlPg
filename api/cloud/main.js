@@ -13,7 +13,7 @@ app.post('/', (req, res) => {
         message: 'Şirket kaydı bulunamadı',
       })
     }
-    req.data.db.Users.create({name: req.body.name}).then((users) => {
+    req.data.db.Users.create({name: req.body.name}).then(() => {
       return res.json({
         type: true,
         message: 'Yeni Kullanıcı yaratılmıştır',

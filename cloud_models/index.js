@@ -41,6 +41,5 @@ const createDB = (config) => {
 
 module.exports = async (config) => {
   const dbResult = await createDB(config);
-  console.log('son 2 önce');
   return dbResult;
  }
