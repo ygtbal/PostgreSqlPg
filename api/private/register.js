@@ -4,14 +4,18 @@ import express from 'express';
 import configJson from '../../bin/config';
 const app = express();
 
-const Sequelize = require('sequelize');
 const pg = require('pg');
+const md5 = require('md5');
 
 const config = configJson['development'];
-import CloudModels from '../../cloud_models/index';
 
 app.post('/', async (req, res) => {
-  db.Business.create(req.body).then(async () => {
+  const regCode = md5(md5(req.body.name.toLowerCase()) + md5(configJson['cloud']['salt']));
+  const postBody = {
+    name: req.body.name.toLowerCase(),
+    regCode,
+  }
+  db.Business.create(postBody).then(async () => {
     const pool = new pg.Pool({
       user: config.username,
       host: config.host,
@@ -19,17 +23,11 @@ app.post('/', async (req, res) => {
       password: config.password,
       port: '5432',
     });
-    pool.query(`CREATE DATABASE ${req.body.name}`).then(async (resul) => {
-      const client = {
-        username: config.username,
-        host: config.host,
-        database: req.body.name.toLowerCase(),
-        password: config.password,
-        dialect: config.dialect,
-      };
+    pool.query(`CREATE DATABASE ${req.body.name}`).then((resul) => {
       return res.json({
         type: true,
-        message: 'DB Oluşturuldu',
+        code: regCode,
+        message: 'Kayıt Başarıyla tamamlandı',
       });
     }).catch((err) => {
       return res.json({
@@ -43,6 +41,6 @@ app.post('/', async (req, res) => {
       message: err.toString(),
     })
   })
-})
+});
 
 module.exports = app;
