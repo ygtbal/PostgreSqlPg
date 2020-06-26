@@ -22,5 +22,8 @@ module.exports = {
     password: process.env.DB_PASS,
     host: process.env.DB_HOST,
     dialect: 'postgres'
+  },
+  cloud: {
+    salt: 'aJ",^}A*r+s.CPc$[V:(0',
   }
 };
