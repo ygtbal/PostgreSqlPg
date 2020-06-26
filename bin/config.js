@@ -11,7 +11,7 @@ module.exports = {
   development: {
     database: 'private_db',
     username: 'postgres',
-    password: '1994yigit44',
+    password: '***',
     host: '127.0.0.1',
     dialect: 'postgres'
   },
