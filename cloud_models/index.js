@@ -3,9 +3,10 @@ import path from 'path';
 import Sequelize from 'sequelize';
 
 
-const createDB = async (config) => {
+const createDB = async (config, next) => {
     const basename = path.basename(__filename);
     let sequelize;
+    let completeLoop = false;
     const db = {};
     sequelize = new Sequelize(
          config.database, config.username, config.password, config
@@ -28,10 +29,9 @@ const createDB = async (config) => {
         console.log('table created ONE');
          db[modelName].associate(db);
       }
-     });
+      });
       db.sequelize = sequelize;
       db.Sequelize = Sequelize;
-      console.log('db created')
       return db;
     }
 

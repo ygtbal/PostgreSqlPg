@@ -46,12 +46,25 @@ app.use((req, res, next) => {
         password: config.password,
         dialect: config.dialect,
       };
-      // req.data.db = await CloudModels(client);
-
-      dbPromise(client).then(async (result) => {
-        req.data.db = await result;
-        console.log('connection başarılı 2');
+      const callback =  () => {
         return next();
+      }
+      // req.data.db = await CloudModels(client);
+      dbPromise(client).then(async (result) => {
+        req.data.db = result;
+       Object.keys(result).filter((item) => item !== "sequelize").filter((item) => item !== "Sequelize").forEach(async (modelName, index, arr) => {
+         result[modelName].sync().then(() => {
+           if (index === arr.length - 1) {
+             callback();
+           }
+         }).catch(() => {
+           return res.json({
+             type: false,
+             message: 'Hataloşko',
+           })
+         });
+        })
+        console.log('after await');
       }).catch(() => {
         return res.json({
           type: false,

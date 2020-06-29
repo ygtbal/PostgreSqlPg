@@ -5,7 +5,6 @@ import db from '../../private_models/index';
 
 
 app.post('/', (req, res) => {
-  req.data.db['Users'].sync().then((result) => {
     req.data.db.Users.create({name: req.body.name}).then(() => {
       return res.json({
         type: true,
@@ -17,10 +16,8 @@ app.post('/', (req, res) => {
         message: err.toString(),
       })
     })
-  }).catch((err) => {
-    console.log({mes: err.toString()});
   })
-})
+
 
 module.exports = app;
 
