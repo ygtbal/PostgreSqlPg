@@ -9,13 +9,13 @@ const md5 = require('md5');
 
 const config = configJson['development'];
 
-app.post('/', async (req, res) => {
+app.post('/', (req, res) => {
   const regCode = md5(md5(req.body.name.toLowerCase()) + md5(configJson['cloud']['salt']));
   const postBody = {
     name: req.body.name.toLowerCase(),
     regCode,
   }
-  db.Business.create(postBody).then(async () => {
+  db.Business.create(postBody).then(() => {
     const pool = new pg.Pool({
       user: config.username,
       host: config.host,
