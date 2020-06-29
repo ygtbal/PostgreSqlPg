@@ -3,11 +3,11 @@ import path from 'path';
 import Sequelize from 'sequelize';
 
 
-const createDB = (config) => {
+const createDB = async (config) => {
     const basename = path.basename(__filename);
     let sequelize;
     const db = {};
-    sequelize = new Sequelize(
+    sequelize = await new Sequelize(
          config.database, config.username, config.password, config
       );
     

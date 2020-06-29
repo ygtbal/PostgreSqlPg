@@ -4,7 +4,7 @@ import express from 'express';
 const app = express();
 
 app.delete('/', (req, res) => {
-  db.Business.destroy({where: {}, trucate: true}).then(() => {
+  db.Business.destroy({where: {}, truncate: true}).then(() => {
     return res.json({
       type: true,
       message: 'Tüm veriler silindi',
