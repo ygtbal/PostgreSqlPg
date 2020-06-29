@@ -22,24 +22,23 @@ const createDB = async (config) => {
         db[model.name] = model;
       });
     
-    Object.keys(db).forEach((modelName) => {
+    await Object.keys(db).forEach(async (modelName) => {
       if (db[modelName].associate) {
         db[modelName].associate(db);
       }
-      db[modelName].sync({}).then((result) => {
+      await db[modelName].sync({}).then((result) => {
         console.log({r: result});
       }).catch((err) => {
         console.log({mes: err.toString()});
       })
     });
-    
     db.sequelize = sequelize;
     db.Sequelize = Sequelize;
-    console.log('son 3 önce');
     return db;
 }
 
+
 module.exports = async (config) => {
-  const dbResult = await createDB(config);
-  return dbResult;
+  const cloudDB = await createDB(config);
+  return cloudDB;
  }
