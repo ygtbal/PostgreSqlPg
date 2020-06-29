@@ -18,7 +18,7 @@ const dbPromise = (param) => {
   })
 }
 
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   if (req.hostname.split('.').length !== 3 && req.hostname.split('.')[1] !== 'localhost') {
     return res.json({
       type: false,
@@ -36,7 +36,7 @@ app.use(async (req, res, next) => {
     if (!foundBusiness) {
       return res.json({
         type: false,
-        message: 'Hop hemşerim nreye ya'
+        message: 'Hop HEMŞERİM NEREYE YA'
       })
     }
       const client = {
@@ -50,6 +50,7 @@ app.use(async (req, res, next) => {
 
       dbPromise(client).then(async (result) => {
         req.data.db = await result;
+        console.log('connection başarılı 2');
         return next();
       }).catch(() => {
         return res.json({

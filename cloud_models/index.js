@@ -7,7 +7,7 @@ const createDB = async (config) => {
     const basename = path.basename(__filename);
     let sequelize;
     const db = {};
-    sequelize = await new Sequelize(
+    sequelize = new Sequelize(
          config.database, config.username, config.password, config
       );
     
@@ -22,24 +22,21 @@ const createDB = async (config) => {
         db[model.name] = model;
       });
     
-    Object.keys(db).forEach((modelName) => {
+     await Object.keys(db).forEach(async (modelName) => {
+       console.log('foreach running');
       if (db[modelName].associate) {
-        db[modelName].associate(db);
+        console.log('table created ONE');
+         db[modelName].associate(db);
       }
-      db[modelName].sync({}).then((result) => {
-        console.log({r: result});
-      }).catch((err) => {
-        console.log({mes: err.toString()});
-      })
-    });
-    
-    db.sequelize = sequelize;
-    db.Sequelize = Sequelize;
-    console.log('son 3 önce');
-    return db;
-}
+     });
+      db.sequelize = sequelize;
+      db.Sequelize = Sequelize;
+      console.log('db created')
+      return db;
+    }
 
-module.exports = async (config) => {
-  const dbResult = await createDB(config);
-  return dbResult;
+
+module.exports = (config) => {
+  const cloudDB = createDB(config);
+  return cloudDB;
  }
